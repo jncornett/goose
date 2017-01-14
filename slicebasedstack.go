@@ -7,15 +7,16 @@ type SliceBasedStack struct {
 	Slice []interface{}
 }
 
-// Push places v at the top of the stack
+// Push places v at the top of the stack.
+// This implementation of Push never fails.
 func (s *SliceBasedStack) Push(v interface{}) error {
 	s.Slice = append(s.Slice, v)
 	return nil
 }
 
-// Pop pops n values off of the top of the stack
+// Pop pops n values off of the top of the stack.
 // If n is greater than the size of the stack, then the stack will be emptied.
-// If n is less than zero, then Pop is a no-op
+// If n is less than zero, then Pop is a no-op.
 func (s *SliceBasedStack) Pop(n int) {
 	if n < 0 {
 		n = 0
@@ -27,6 +28,8 @@ func (s *SliceBasedStack) Pop(n int) {
 	s.Slice = s.Slice[:newSize]
 }
 
+// Peek returns the value at pos in the stack.
+// If pos is invalid, Peek returns an error.
 func (s SliceBasedStack) Peek(pos int) (interface{}, error) {
 	index, err := s.GetAbsIndex(pos)
 	if err != nil {
@@ -36,6 +39,8 @@ func (s SliceBasedStack) Peek(pos int) (interface{}, error) {
 	return val, nil
 }
 
+// Copy copies the value at pos and pushes it onto the top of the stack>
+// If pos is invalid, Copy returns an error.
 func (s *SliceBasedStack) Copy(pos int) error {
 	index, err := s.GetAbsIndex(pos)
 	if err != nil {
@@ -45,6 +50,8 @@ func (s *SliceBasedStack) Copy(pos int) error {
 	return nil
 }
 
+// Replace replaces the value at pos with v.
+// If pos is invalid, Replace returns an error.
 func (s SliceBasedStack) Replace(pos int, v interface{}) error {
 	index, err := s.GetAbsIndex(pos)
 	if err != nil {
@@ -54,6 +61,8 @@ func (s SliceBasedStack) Replace(pos int, v interface{}) error {
 	return nil
 }
 
+// Swap swaps the values at oldPos and newPos.
+// If pos is invalid, Swap returns an error.
 func (s SliceBasedStack) Swap(oldPos, newPos int) error {
 	oldIndex, err := s.GetAbsIndex(oldPos)
 	if err != nil {
@@ -69,10 +78,15 @@ func (s SliceBasedStack) Swap(oldPos, newPos int) error {
 	return nil
 }
 
+// Size returns the size of the stack
 func (s SliceBasedStack) Size() int {
 	return len(s.Slice)
 }
 
+// GetAbsIndex returns the absolute index based on pos.
+// If pos is invalid, GetAbsIndex returns an error.
+// If pos is negative, it denotes the relative index from the top of the stack.
+// The absolute index of relative position -1 is one less than the stack size.
 func (s SliceBasedStack) GetAbsIndex(pos int) (int, error) {
 	var index int
 	if pos < 0 {
