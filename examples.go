@@ -1,17 +1,15 @@
-package goose_test
+package goose
 
 import (
 	"errors"
 	"log"
 	"strings"
-
-	"github.com/jncornett/goose"
 )
 
 // This is example creates a new VM with default settings, loads a chunk,
 // executes the chunk, and then cleans up (via the deferred Close())
 func ExampleOne() {
-	g := goose.NewState()
+	g := NewState()
 	defer g.Close()
 	err := g.Load([]byte(`fmt.Println("hello, world")`))
 	if err != nil {
@@ -30,7 +28,7 @@ func ExampleOne() {
 // FIXME Need to revisit use of []interface{} to pass return values
 // FIXME Need to revisit calling methods on data types directly (e.g. Array.Append)
 func ExampleTwo() {
-	var _ goose.GoFunc = func(s *goose.State) ([]interface{}, error) {
+	var _ GoFunc = func(s *State) ([]interface{}, error) {
 		arg, err := s.Peek(0)
 		if err != nil {
 			return nil, err
@@ -47,7 +45,7 @@ func ExampleTwo() {
 		if !ok {
 			return nil, errors.New("Wrong type, blah")
 		}
-		var array goose.Array
+		var array Array
 		for _, v := range strings.Split(str, sep) {
 			array.Append(v)
 		}
