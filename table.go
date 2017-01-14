@@ -6,20 +6,20 @@ type Table interface {
 	Size() int
 }
 
-type DefaultTable struct{}
+type defaultTable struct{}
 
 func NewDefaultTable() Table {
-	return &DefaultTable{}
+	return &defaultTable{}
 }
 
-func (t *DefaultTable) Get(key interface{}) (interface{}, error) {
+func (t *defaultTable) Get(key interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (t *DefaultTable) Set(key, val interface{}) error {
+func (t *defaultTable) Set(key, val interface{}) error {
 	return nil
 }
 
-func (t *DefaultTable) Size() int {
+func (t *defaultTable) Size() int {
 	return 0
 }
