@@ -1,11 +1,11 @@
 package goose
 
 type Function interface {
-	Call(s *State) error
+	Call(s *State) (returnValues []interface{}, err error)
 }
 
-type GoFunc func(*State) error
+type GoFunc func(*State) (returnValues []interface{}, err error)
 
-func (f GoFunc) Call(s *State) error {
+func (f GoFunc) Call(s *State) (returnValues []interface{}, err error) {
 	return f(s)
 }
