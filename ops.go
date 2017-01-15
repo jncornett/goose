@@ -1,7 +1,7 @@
 package goose
 
 const (
-	OpNoop OpCode = iota
+	OpNoop OpIndex = iota
 	OpRawGetTable
 	OpRawSetTable
 	OpSetTable
@@ -64,7 +64,7 @@ func opIdentical(s *State)         {}
 func opJump(s *State)              {}
 func opPanic(s *State)             {}
 
-type mapOpTable map[OpCode]Op
+type mapOpTable map[OpIndex]OpFunc
 
 // NewMapOpTable creates a new map object that implements the OpTable interface.
 // NOTE Until the op set becomes more stabilized, keeping the op table as a map
@@ -103,6 +103,6 @@ func NewMapOpTable() OpTable {
 	}
 }
 
-func (m mapOpTable) Get(code OpCode) Op {
+func (m mapOpTable) Get(code OpIndex) OpFunc {
 	return m[code]
 }
