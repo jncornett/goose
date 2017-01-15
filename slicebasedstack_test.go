@@ -59,7 +59,7 @@ func TestPop(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(fmt.Sprint(test.OldSize, "_", test.PopAmount), func(t *testing.T) {
-			s := goose.SliceBasedStack{make([]interface{}, test.OldSize)}
+			s := goose.SliceBasedStack{Slice: make([]interface{}, test.OldSize)}
 			// pop
 			s.Pop(test.PopAmount)
 			if test.NewSize != len(s.Slice) {
@@ -69,64 +69,37 @@ func TestPop(t *testing.T) {
 	}
 }
 
-func TestGetAbsIndex(t *testing.T) {
-	tests := []struct {
-		Size          int
-		RelativeIndex int
-		ExpectError   bool
-		AbsIndex      int
-	}{
-		{0, 0, true, 0},
-		{0, 1, true, 0},
-		{0, -1, true, 0},
-		{5, -1, false, 4},
-		{5, 0, false, 0},
-		{5, 10, true, 0},
-		{5, -5, false, 0},
-		{5, -6, true, 0},
-	}
-	for _, test := range tests {
-		test := test
-		t.Run(fmt.Sprint(test.Size, "_", test.RelativeIndex), func(t *testing.T) {
-			s := goose.SliceBasedStack{make([]interface{}, test.Size)}
-			index, err := s.GetAbsIndex(test.RelativeIndex)
-			if test.ExpectError {
-				if err == nil {
-					t.Fatal("expected an error, got nothing")
-				}
-				return
-			}
-			if err != nil {
-				t.Fatal(err)
-			}
-			if test.AbsIndex != index {
-				t.Errorf("expected index %v, got %v", test.AbsIndex, index)
-			}
-		})
-	}
-}
-
 func TestPeek(t *testing.T) {
 	tests := []struct {
-		StackSize     int
-		PeekPos       int
+		Size          int
+		Pos           goose.StackPos
 		ExpectError   bool
 		ExpectedValue int
 	}{
-		{0, 0, true, 0},
 		{0, -1, true, 0},
-		{1, 0, false, 1},
-		{5, -1, false, 5},
-		{5, 2, false, 3},
-		{5, -5, false, 1},
-		{5, -6, true, 0},
+		{0, 0, true, 0},
+		{0, 1, true, 0},
+
+		{1, -2, true, 0},
+		{1, -1, false, 1},
+		{1, 0, true, 0},
+		{1, 1, false, 1},
+		{1, 2, true, 0},
+
+		{2, -3, true, 0},
+		{2, -2, false, 1},
+		{2, -1, false, 2},
+		{2, 0, true, 0},
+		{2, 1, false, 1},
+		{2, 2, false, 2},
+		{2, 3, true, 0},
 	}
 	for _, test := range tests {
 		test := test
-		t.Run(fmt.Sprint(test.StackSize, "_", test.PeekPos), func(t *testing.T) {
-			s := goose.SliceBasedStack{makeIntRange(test.StackSize)}
+		t.Run(fmt.Sprint(test.Size, "_", test.Pos), func(t *testing.T) {
+			s := goose.SliceBasedStack{Slice: makeIntRange(test.Size)}
 			// peek
-			val, err := s.Peek(test.PeekPos)
+			val, err := s.Peek(test.Pos)
 			if test.ExpectError {
 				if err == nil {
 					t.Fatal("expected an error, got nothing")
@@ -149,7 +122,7 @@ func TestPeek(t *testing.T) {
 
 func TestCopy(t *testing.T) {
 	t.Run("OutOfRange", func(t *testing.T) {
-		s := goose.SliceBasedStack{makeIntRange(5)}
+		s := goose.SliceBasedStack{Slice: makeIntRange(5)}
 		err := s.Copy(-10)
 		if err == nil {
 			t.Errorf("expected an error, got nothing")
@@ -157,7 +130,7 @@ func TestCopy(t *testing.T) {
 		checkIntRangeValid(t, s.Slice)
 	})
 	t.Run("InRange", func(t *testing.T) {
-		s := goose.SliceBasedStack{makeIntRange(5)}
+		s := goose.SliceBasedStack{Slice: makeIntRange(5)}
 		err := s.Copy(-1)
 		if err != nil {
 			t.Error(err)
@@ -174,7 +147,7 @@ func TestCopy(t *testing.T) {
 
 func TestReplace(t *testing.T) {
 	t.Run("OutOfRange", func(t *testing.T) {
-		s := goose.SliceBasedStack{makeIntRange(5)}
+		s := goose.SliceBasedStack{Slice: makeIntRange(5)}
 		err := s.Replace(-10, 42)
 		if err == nil {
 			t.Errorf("expected an error, got nothing")
@@ -182,7 +155,7 @@ func TestReplace(t *testing.T) {
 		checkIntRangeValid(t, s.Slice)
 	})
 	t.Run("InRange", func(t *testing.T) {
-		s := goose.SliceBasedStack{makeIntRange(5)}
+		s := goose.SliceBasedStack{Slice: makeIntRange(5)}
 		err := s.Replace(-1, 42)
 		if err != nil {
 			t.Error(err)
@@ -199,24 +172,24 @@ func TestReplace(t *testing.T) {
 
 func TestSwap(t *testing.T) {
 	t.Run("OldOutOfRange", func(t *testing.T) {
-		s := goose.SliceBasedStack{makeIntRange(5)}
-		err := s.Swap(-10, 0)
+		s := goose.SliceBasedStack{Slice: makeIntRange(5)}
+		err := s.Swap(-10, 1)
 		if err == nil {
 			t.Errorf("expected an error, got nothing")
 		}
 		checkIntRangeValid(t, s.Slice)
 	})
 	t.Run("NewOutOfRange", func(t *testing.T) {
-		s := goose.SliceBasedStack{makeIntRange(5)}
-		err := s.Swap(0, -10)
+		s := goose.SliceBasedStack{Slice: makeIntRange(5)}
+		err := s.Swap(1, -10)
 		if err == nil {
 			t.Errorf("expected an error, got nothing")
 		}
 		checkIntRangeValid(t, s.Slice)
 	})
 	t.Run("InRange", func(t *testing.T) {
-		s := goose.SliceBasedStack{makeIntRange(5)}
-		err := s.Swap(-1, 0)
+		s := goose.SliceBasedStack{Slice: makeIntRange(5)}
+		err := s.Swap(-1, 1)
 		if err != nil {
 			t.Error(err)
 		}
@@ -246,7 +219,7 @@ func TestSize(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run("", func(t *testing.T) {
-			s := goose.SliceBasedStack{test.Value}
+			s := goose.SliceBasedStack{Slice: test.Value}
 			if test.Size != s.Size() {
 				t.Errorf("expected size %v, got %v", test.Size, s.Size())
 			}

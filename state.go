@@ -36,11 +36,11 @@ func (s *State) Push(v interface{}) error {
 	return s.stack.Push(v)
 }
 
-func (s *State) PushCopy(pos int) error {
+func (s *State) PushCopy(pos StackPos) error {
 	return s.stack.Copy(pos)
 }
 
-func (s *State) Peek(pos int) (interface{}, error) {
+func (s *State) Peek(pos StackPos) (interface{}, error) {
 	return s.stack.Peek(pos)
 }
 
@@ -52,7 +52,7 @@ func (s *State) StackSize() int {
 	return s.stack.Size()
 }
 
-func (s *State) RawGetTable(tablePos int) error {
+func (s *State) RawGetTable(tablePos StackPos) error {
 	obj, err := s.stack.Peek(tablePos)
 	if err != nil {
 		return err
@@ -73,7 +73,7 @@ func (s *State) RawGetTable(tablePos int) error {
 	return s.stack.Replace(-1, val)
 }
 
-func (s *State) RawSetTable(tablePos int) error {
+func (s *State) RawSetTable(tablePos StackPos) error {
 	obj, err := s.stack.Peek(tablePos)
 	if err != nil {
 		return err
