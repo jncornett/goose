@@ -1,31 +1,31 @@
 package goose
 
-func opRawGetTable(vm *Vm, s *State)       {}
-func opRawSetTable(vm *Vm, s *State)       {}
-func opSetTable(vm *Vm, s *State)          {}
-func opGetTable(vm *Vm, s *State)          {}
-func opPop(vm *Vm, s *State)               {}
-func opCall(vm *Vm, s *State)              {}
-func opLoadValue(vm *Vm, s *State)         {}
-func opLoadConstInt(vm *Vm, s *State)      {}
-func opLoadConstBool(vm *Vm, s *State)     {}
-func opLoadConstNil(vm *Vm, s *State)      {}
-func opAdd(vm *Vm, s *State)               {}
-func opSub(vm *Vm, s *State)               {}
-func opMul(vm *Vm, s *State)               {}
-func opDiv(vm *Vm, s *State)               {}
-func opBitwiseXor(vm *Vm, s *State)        {}
-func opBitwiseOr(vm *Vm, s *State)         {}
-func opBitwiseAnd(vm *Vm, s *State)        {}
-func opBitwiseLeftshift(vm *Vm, s *State)  {}
-func opBitwiseRightshift(vm *Vm, s *State) {}
-func opLessThan(vm *Vm, s *State)          {}
-func opGreaterThan(vm *Vm, s *State)       {}
-func opLessThanEqual(vm *Vm, s *State)     {}
-func opGreaterThanEqual(vm *Vm, s *State)  {}
-func opEqual(vm *Vm, s *State)             {}
-func opNotEqual(vm *Vm, s *State)          {}
-func opApproxEqual(vm *Vm, s *State)       {}
-func opIdentical(vm *Vm, s *State)         {}
-func opJump(vm *Vm, s *State)              {}
-func opPanic(vm *Vm, s *State)             {}
+func opRawGetTable(s *State)       {}
+func opRawSetTable(s *State)       {}
+func opSetTable(s *State)          {}
+func opGetTable(s *State)          {}
+func opPop(s *State)               {}
+func opCall(s *State)              {}
+func opLoadValue(s *State)         {}
+func opLoadConstInt(s *State)      {}
+func opLoadConstBool(s *State)     {}
+func opLoadConstNil(s *State)      {}
+func opAdd(s *State)               {}
+func opSub(s *State)               {}
+func opMul(s *State)               {}
+func opDiv(s *State)               {}
+func opBitwiseXor(s *State)        {}
+func opBitwiseOr(s *State)         {}
+func opBitwiseAnd(s *State)        {}
+func opBitwiseLeftshift(s *State)  {}
+func opBitwiseRightshift(s *State) {}
+func opLessThan(s *State)          {}
+func opGreaterThan(s *State)       {}
+func opLessThanEqual(s *State)     {}
+func opGreaterThanEqual(s *State)  {}
+func opEqual(s *State)             {}
+func opNotEqual(s *State)          {}
+func opApproxEqual(s *State)       {}
+func opIdentical(s *State)         {}
+func opJump(s *State)              {}
+func opPanic(s *State)             {}

@@ -2,7 +2,7 @@ package goose
 
 // Op is a function that is triggered as the result of stepping through
 // instruction table.
-type Op func(vm *Vm, s *State)
+type Op func(s *State)
 
 // OpTable represents a mapping of OpCodes to Ops
 type OpTable interface {
